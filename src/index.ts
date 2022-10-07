@@ -9,11 +9,21 @@ const app = new Application({
 	height: 480
 });
 
-const clampy: Sprite = Sprite.from("clampy.png");
+const crate: Sprite = Sprite.from("crate.png");
 
-clampy.anchor.set(0.5);
+crate.anchor.set(0.5);
+crate.scale.set(.2);
 
-clampy.x = app.screen.width / 2;
-clampy.y = app.screen.height / 2;
+let centerX = app.screen.width / 2
+let centerY = app.screen.height / 2
 
-app.stage.addChild(clampy);
+crate.x = centerX;
+crate.y = centerY;
+
+let elapsed = 0.0;
+app.ticker.add((delta) => {
+	elapsed += delta;
+	crate.x = centerX + Math.cos(elapsed / 50.0) * 100.0;
+	crate.y = centerY + Math.sin(elapsed / 50.0) * 100.0;
+	app.stage.addChild(crate);
+});
