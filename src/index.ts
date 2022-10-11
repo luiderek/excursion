@@ -1,4 +1,4 @@
-import { Application, Sprite } from 'pixi.js'
+import { Application, Sprite, Container } from 'pixi.js'
 
 const app = new Application({
 	view: document.getElementById("pixi-canvas") as HTMLCanvasElement,
@@ -9,21 +9,27 @@ const app = new Application({
 	height: 480
 });
 
-const crate: Sprite = Sprite.from("crate.png");
+const container = new Container();
+app.stage.addChild(container);
 
-crate.anchor.set(0.5);
-crate.scale.set(.2);
 
 let centerX = app.screen.width / 2
 let centerY = app.screen.height / 2
 
-crate.x = centerX;
-crate.y = centerY;
 
 let elapsed = 0.0;
-app.ticker.add((delta) => {
-	elapsed += delta;
-	crate.x = centerX + Math.cos(elapsed / 50.0) * 100.0;
-	crate.y = centerY + Math.sin(elapsed / 50.0) * 100.0;
-	app.stage.addChild(crate);
-});
+
+for (let i = 0; i < 25; i++) {
+	const crate: Sprite = Sprite.from("crate.png");
+	crate.anchor.set(0.5);
+	crate.scale.set(.2);
+	crate.x = centerX;
+	crate.y = centerY;
+	container.addChild(crate);
+	app.ticker.add((delta) => {
+		elapsed += delta;
+		crate.x = centerX + Math.cos(elapsed / 700.0) * 25*i;
+		crate.y = centerY + Math.sin(elapsed / 15.0) * 25*i;
+		app.stage.addChild(crate);
+	});
+}
